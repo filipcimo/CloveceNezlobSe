@@ -84,15 +84,9 @@ void Game::menu()
             pocetHracu = pocet;
             hraci = new Player[pocetHracu];
 
-            std::uint16_t count = 11;
-            for (std::uint16_t i = 0; i < pocetHracu; i++)
+            for (std::uint16_t i = 1; i < pocetHracu; i++)
             {
-                if (i == 0) { hraci[i].poziceSpawn = 0; }
-                else
-                {
-                    hraci[i].poziceSpawn = count;
-                    count += 10;
-                }
+                hraci[i].poziceSpawn = (i * 11);
             }
 
             break;
@@ -229,13 +223,26 @@ std::uint16_t Game::Player::aktualniHracPosun(const Game& thisObj)
 }
 
 
+bool operator==(const std::string& s1, const std::string& s2)
+{
+    if (s1.size() != s2.size()) { return false; }
+
+    for (std::uint64_t i = 0; i < s1.size(); i++)
+    {
+        if (s1[i] != s2[i]) { return false; }
+    }
+
+    return true;
+}
+
+
 
 int main()
 {
-    const std::auto_ptr<std::string> volba (new std::string("ano"));
+    std::string* volba = new std::string("ano");
     Game* const game = new Game();
 
-    while (strcmp((*volba.get()).c_str(), "ano") == 0 || strcmp((*volba.get()).c_str(), "ANO") == 0 || strcmp((*volba.get()).c_str(), "Ano") == 0)
+    while (*volba == "ano" || *volba == "ANO" || *volba == "Ano")
     {
         game->menu();
         game->run();
@@ -243,7 +250,7 @@ int main()
         game->reset();
 
         std::cout << en << "Dalsi hra ? (ano/ne)" << en;
-        std::getline(std::cin, *volba.get());
+        std::getline(std::cin, *volba);
         std::cout << en;
 
         std::cin.clear();
@@ -251,6 +258,7 @@ int main()
         std::cout.flush();
     }
 
+    delete volba;
     delete game;
 
     return 0;
