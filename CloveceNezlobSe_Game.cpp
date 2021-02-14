@@ -69,7 +69,7 @@ void Game::menu()
         std::cin >> pocet;
         std::cout << en;
 
-        std::cin.ignore();
+        std::cin.clear();
         std::cin.sync();
         std::cout.flush();
 
@@ -229,6 +229,9 @@ int main()
         std::cout << en << "Dalsi hra ? (ano/ne)" << en;
         std::getline(std::cin, *volba.get());
         std::cout << en;
+
+        std::cin.clear();
+        std::cin.sync();
         std::cout.flush();
     }
 
