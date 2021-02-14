@@ -28,20 +28,20 @@ class Game
         {
             public:
                 Player() = default;
-                ~Player() { delete [] zaplnenePoziceDomecek; }
+                ~Player();
 
                 static std::uint16_t aktualniHracPosun(const Game& thisObj);
 
                 static std::uint16_t aktualniHrac;
                 bool panacekVPoli = false;
-                std::uint16_t figurekZbyva = 4;
+                std::uint16_t poziceSpawn = 0;
                 std::uint16_t figurekDoma = 0;
                 std::uint16_t pozicePanacka = 0;
                 bool* const zaplnenePoziceDomecek = new bool[4] {false, false, false, false};
         };
 
-        std::uint16_t pocetHracu = 0;
         Player* hraci = nullptr;
+        std::uint16_t pocetHracu = 0;
 };
 
 
@@ -83,6 +83,18 @@ void Game::menu()
         {
             pocetHracu = pocet;
             hraci = new Player[pocetHracu];
+
+            std::uint16_t count = 11;
+            for (std::uint16_t i = 0; i < pocetHracu; i++)
+            {
+                if (i == 0) { hraci[i].poziceSpawn = 0; }
+                else
+                {
+                    hraci[i].poziceSpawn = count;
+                    count += 10;
+                }
+            }
+
             break;
         }
     }
@@ -121,7 +133,6 @@ void Game::run()
                         kostka = rand() % 6 + 1;
                         player->pozicePanacka += kostka;
                         player->panacekVPoli = true;
-                        player->figurekZbyva -= 1;
 
                         break;
                     }
@@ -133,7 +144,6 @@ void Game::run()
                 kostka = rand() % 6 + 1;
                 player->pozicePanacka += kostka;
                 player->panacekVPoli = true;
-                player->figurekZbyva -= 1;
             }
         }
 
@@ -166,11 +176,10 @@ void Game::run()
             {
                 if (&hraci[i] != player)
                 {
-                    if (hraci[i].pozicePanacka == player->pozicePanacka)
+                    if ((hraci[i].pozicePanacka + hraci[i].poziceSpawn) == (player->pozicePanacka + player->poziceSpawn))
                     {
                         hraci[i].panacekVPoli = false;
                         hraci[i].pozicePanacka = 0;
-                        hraci[i].figurekZbyva += 1;
                     }
                 }
             }
@@ -203,6 +212,13 @@ void Game::results() const
         }
     }
 }
+
+
+Game::Player::~Player()
+{
+    delete [] zaplnenePoziceDomecek;
+}
+
 
 std::uint16_t Game::Player::aktualniHracPosun(const Game& thisObj)
 {
