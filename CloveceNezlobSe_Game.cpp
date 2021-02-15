@@ -145,11 +145,11 @@ void Game::run()
         {
             player->pozicePanacka += kostka;
 
-            if (player->pozicePanacka >= 39)
+            if (player->pozicePanacka >= 40)
             {
-                if (player->pozicePanacka > 39)
+                if (player->pozicePanacka > 40)
                 {
-                    player->pozicePanacka -= (player->pozicePanacka - 39);
+                    player->pozicePanacka -= (player->pozicePanacka - 40);
                 }
 
                 kostka = rand() % 6 + 1;
