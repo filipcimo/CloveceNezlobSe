@@ -16,7 +16,7 @@ class Game
 {
     public:
         Game() = default;
-        ~Game() = default;
+        ~Game();
 
         void menu();
         void run();
@@ -46,6 +46,15 @@ class Game
 
 
 std::uint16_t Game::Player::aktualniHrac = 0;
+
+
+Game::~Game()
+{
+    if (hraci != nullptr)
+    {
+        delete [] hraci;
+    }
+}
 
 
 void Game::reset()
