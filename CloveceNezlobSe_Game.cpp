@@ -1,48 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <cctype>
-#include <iostream>
-#include <string.h>
-#include <math.h>
-#include <cmath>
-#include <tuple>
-#include <ios>
-#include <limits>
-#include <memory>
-#define en '\n'
+#include "CloveceNezlobSe_Game.h"
 
-
-class Game
-{
-    public:
-        Game() = default;
-        ~Game();
-
-        void menu();
-        void run();
-        void reset();
-        void results() const;
-
-    private:
-        class Player
-        {
-            public:
-                Player() = default;
-                ~Player();
-
-                static std::uint16_t aktualniHracPosun(const Game& thisObj);
-
-                static std::uint16_t aktualniHrac;
-                bool panacekVPoli = false;
-                std::uint16_t poziceSpawn = 0;
-                std::uint16_t figurekDoma = 0;
-                std::uint16_t pozicePanacka = 0;
-                bool* const zaplnenePoziceDomecek = new bool[4] {false, false, false, false};
-        };
-
-        Player* hraci = nullptr;
-        std::uint16_t pocetHracu = 0;
-};
 
 
 std::uint16_t Game::Player::aktualniHrac = 0;
@@ -84,8 +41,7 @@ void Game::menu()
 
         if (pocet < 2 || pocet > 4)
         {
-            std::cerr << "Musi hrat 2 az 4 tymy!" << en << en;
-            std::cerr.flush();
+            throw std::runtime_error("Musi hrat 2 az 4 tymy!");
         }
 
         else if (pocet >= 2 && pocet <= 4)
@@ -242,33 +198,4 @@ bool operator==(const std::string& s1, const std::string& s2)
     }
 
     return true;
-}
-
-
-
-int main()
-{
-    std::string* volba = new std::string("ano");
-    Game* const game = new Game();
-
-    while (*volba == "ano" || *volba == "ANO" || *volba == "Ano")
-    {
-        game->menu();
-        game->run();
-        game->results();
-        game->reset();
-
-        std::cout << en << "Dalsi hra ? (ano/ne)" << en;
-        std::getline(std::cin, *volba);
-        std::cout << en;
-
-        std::cin.clear();
-        std::cin.sync();
-        std::cout.flush();
-    }
-
-    delete volba;
-    delete game;
-
-    return 0;
 }
